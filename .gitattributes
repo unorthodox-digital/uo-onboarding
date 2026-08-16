@@ -1,0 +1,2 @@
+# Bundled Claude exports: never rewrite line endings, keep bytes identical to what is deployed.
+* -text
