@@ -30,23 +30,11 @@
   h1{font-size:30px;line-height:1.15;letter-spacing:-.02em;font-weight:700}
   .sub{color:var(--muted);font-size:15px;line-height:1.5;margin:6px 0 0 42px}
 
-  /* ── gate ─────────────────────────────────────────────── */
-  #gate{margin:36px 0 0 42px;max-width:340px}
-  label{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
-        color:var(--muted);margin-bottom:8px;font-weight:600}
-  input{width:100%;font:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);
-        border-radius:10px;background:var(--panel);color:var(--ink)}
-  input::placeholder{color:var(--muted)}
-  input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(47,107,250,.22)}
-  button{margin-top:12px;font:inherit;font-size:14px;font-weight:600;padding:11px 22px;
-         border:0;border-radius:9px;background:var(--brand);color:#fff;cursor:pointer}
-  button:hover{background:var(--brand-hi)}
-  .err{color:#f87171;font-size:13px;margin-top:10px;min-height:18px}
-
-  /* ── list ─────────────────────────────────────────────── */
-  #app{display:none;margin-top:32px}
-  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-  #filter{flex:1}
+  .toolbar{display:flex;align-items:center;gap:12px;margin:32px 0 22px}
+  #filter{flex:1;font:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);
+          border-radius:10px;background:var(--panel);color:var(--ink)}
+  #filter::placeholder{color:var(--muted)}
+  #filter:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(47,107,250,.22)}
   .count{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
          font-weight:600;white-space:nowrap;padding:0 4px}
   .sect{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
@@ -73,51 +61,20 @@
   </header>
   <p class="sub">Every client onboarding page, one click away.</p>
 
-  <form id="gate" autocomplete="off">
-    <label for="code">Access code</label>
-    <input id="code" type="password" inputmode="text" autocomplete="off" placeholder="Enter the team code" autofocus>
-    <button type="submit">Enter</button>
-    <div class="err" id="err" role="alert"></div>
-  </form>
-
-  <main id="app">
-    <div class="toolbar">
-      <input id="filter" type="search" placeholder="Search clients…" aria-label="Search clients">
-      <div class="count" id="count"></div>
-    </div>
-    <div class="sect">Client onboarding pages</div>
-    <ul id="list"></ul>
-  </main>
+  <div class="toolbar">
+    <input id="filter" type="search" placeholder="Search clients…" aria-label="Search clients">
+    <div class="count" id="count"></div>
+  </div>
+  <div class="sect">Client onboarding pages</div>
+  <ul id="list"></ul>
 </div>
 
 <script>
-/* Change this to whatever code the team should use.
-   Note: this is client-side only — anyone who views source can read it.
-   It keeps casual visitors out; it is not a security boundary. */
-var ACCESS_CODE = "unorthodox";
-
-var KEY = "uo-library-ok";
-var gate = document.getElementById("gate");
-var app  = document.getElementById("app");
-var err  = document.getElementById("err");
-
-function unlock(){
-  gate.style.display = "none";
-  app.style.display  = "block";
-  load();
-}
-
-if (sessionStorage.getItem(KEY) === "1") unlock();
-
-gate.addEventListener("submit", function(e){
-  e.preventDefault();
-  if (document.getElementById("code").value.trim() === ACCESS_CODE){
-    sessionStorage.setItem(KEY, "1");
-    unlock();
-  } else {
-    err.textContent = "Not quite — check the code and try again.";
-  }
-});
+/* No password logic here by design. Access is enforced server-side by the
+   netlify/edge-functions/library-gate.ts edge function, which checks the
+   LIBRARY_PASSWORD environment variable before this file is ever served.
+   Do not reintroduce a client-side code check — it would be readable in
+   view-source and would add nothing. */
 
 var all = [];
 
@@ -161,26 +118,24 @@ function render(items){
   });
 }
 
-function load(){
-  fetch("pages.json", { cache: "no-store" })
-    .then(function(r){
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(function(data){
-      all = Array.isArray(data) ? data.slice() : [];
-      all.sort(function(a,b){
-        return (a.clientName || a.slug || "").localeCompare(b.clientName || b.slug || "");
-      });
-      document.getElementById("count").textContent =
-        all.length + (all.length === 1 ? " client" : " clients");
-      render(all);
-    })
-    .catch(function(e){
-      document.getElementById("list").innerHTML =
-        '<li class="empty">Could not load the client list (' + e.message + ').</li>';
+fetch("pages.json", { cache: "no-store" })
+  .then(function(r){
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(function(data){
+    all = Array.isArray(data) ? data.slice() : [];
+    all.sort(function(a,b){
+      return (a.clientName || a.slug || "").localeCompare(b.clientName || b.slug || "");
     });
-}
+    document.getElementById("count").textContent =
+      all.length + (all.length === 1 ? " client" : " clients");
+    render(all);
+  })
+  .catch(function(e){
+    document.getElementById("list").innerHTML =
+      '<li class="empty">Could not load the client list (' + e.message + ').</li>';
+  });
 
 document.getElementById("filter").addEventListener("input", function(e){
   var q = e.target.value.trim().toLowerCase();
