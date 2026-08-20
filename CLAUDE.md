@@ -24,7 +24,10 @@ Netlify site ID: `8447ec80-b7d4-4ee0-9d60-5934901f08b3` (team plan `nf_team_dev`
 - No build step for the pages. Netlify serves everything under the publish
   directory as-is; do not add a build command. `package.json` exists only so
   Netlify installs the dependencies the functions need — it never runs over the
-  client pages.
+  client pages. Keep `package-lock.json` committed: without it Netlify re-resolves
+  versions against a cached npm index, which has already failed a deploy with
+  `ETARGET ... @netlify/otel` for a version that does exist. With the lockfile it
+  runs `npm ci` and fetches pinned tarballs instead.
 - The site is currently **public** — any client page is reachable by guessing its
   slug. Assume anything committed here is world-readable.
 
