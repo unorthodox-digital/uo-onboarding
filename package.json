@@ -1,0 +1,12 @@
+{
+  "name": "uo-onboarding",
+  "private": true,
+  "type": "module",
+  "description": "Netlify functions for the client onboarding site. The pages themselves are static and are NOT built - see CLAUDE.md.",
+  "dependencies": {
+    "@netlify/blobs": "^11.0.1"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^6.0.0"
+  }
+}
