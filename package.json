@@ -2,11 +2,14 @@
   "name": "uo-onboarding",
   "private": true,
   "type": "module",
-  "description": "Netlify functions for the client onboarding site. The pages themselves are static and are NOT built - see CLAUDE.md.",
+  "description": "Serverless functions for the client onboarding site. The pages themselves are static and are NOT built - see CLAUDE.md.",
   "dependencies": {
+    "@vercel/blob": "^2.0.0",
+    "@vercel/edge": "^1.2.2",
     "@netlify/blobs": "^11.0.1"
   },
   "devDependencies": {
-    "@netlify/functions": "^6.0.0"
+    "@netlify/functions": "^6.0.0",
+    "@vercel/node": "^5.0.0"
   }
 }
