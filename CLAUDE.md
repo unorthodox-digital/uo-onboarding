@@ -41,6 +41,7 @@ writes under `deploy/uo-onboarding/<slug>/`, so a publish cannot touch them.
 |---|---|---|
 | `/`, `/pages.json` | `netlify/edge-functions/library-gate.ts` | Password gate for the team library. Fails closed without `LIBRARY_PASSWORD`. |
 | `/api/state/<slug>` | `netlify/functions/state.mts` | Shared checklist progress, stored in Netlify Blobs. |
+| `/api/remove-page` | `netlify/functions/remove-page.mts` | Removes a client page — files, manifest entry and blob state — in one commit. |
 
 ### Shared progress state (`/api/state/<slug>`)
 
@@ -58,3 +59,21 @@ ticked a box can see it. `state.mts` moves that state server-side:
 A page only uses this once its bundle calls it instead of `localStorage`. That
 code lives inside each export, so it comes from the Claude Design template —
 publishing this function does not change pages already deployed.
+
+### Removing a page (`/api/remove-page`)
+
+The X on each library card posts `{ slug }` here. It deletes the page's files
+and its `pages.json` entry in **one** commit, the same way `/newpage` writes
+them, so the library cannot disagree with what is deployed. Netlify then
+rebuilds and the URL goes dead.
+
+- **It re-checks the login cookie itself.** `library-gate` only covers `/` and
+  `/pages.json`; it does not sit in front of `/api/*`. Without that check anyone
+  who found the URL could take a client's page offline.
+- **It also deletes the slug's Blobs state.** The slug is the storage key, so a
+  page later published under the same slug would otherwise inherit the previous
+  client's ticked boxes and typed answers.
+- Needs `GITHUB_TOKEN` in Netlify's environment variables — a separate copy from
+  DoxBot's, since Netlify cannot read Replit's secrets. Fails closed without it.
+- The ref update is fast-forward only, so a `/newpage` publish landing mid-flight
+  makes the removal fail rather than reverting it.
