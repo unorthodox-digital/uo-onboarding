@@ -1,2 +1,23 @@
 node_modules/
+
+# Host CLI state. `vercel link` writes project/org ids into .vercel.
 .netlify/
+.vercel
+
+# Never commit secrets. LIBRARY_PASSWORD and GITHUB_TOKEN live in the host's
+# environment variables; a local `netlify dev` or `vercel dev` will happily
+# create one of these files if you let it.
+.env
+.env.*
+!.env.example
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,7 +1,16 @@
 # Netlify Doc Uploader
 
-Client onboarding pages for https://unorthodoxonboarding.com. Netlify serves the
-site directly from this repo. Tracked in Linear **UNO-570**.
+Client onboarding pages for https://unorthodoxonboarding.com, served directly
+from this repo. Tracked in Linear **UNO-570**.
+
+**Mid-migration from Netlify to Vercel.** Both sets of config are present on
+purpose: Netlify's (`netlify.toml`, `netlify/`) is still what serves production
+until DNS moves, and Vercel's (`vercel.json`, `middleware.ts`, `api/`) is the
+replacement. Delete the Netlify half only once the cutover is proven.
+
+**The repo is private.** It was briefly public; the client bundles carry named
+contacts, direct emails, phone numbers and per-client Drive links, so keep it
+private.
 
 Netlify site ID: `8447ec80-b7d4-4ee0-9d60-5934901f08b3` (team plan `nf_team_dev`).
 
@@ -77,3 +86,27 @@ rebuilds and the URL goes dead.
   DoxBot's, since Netlify cannot read Replit's secrets. Fails closed without it.
 - The ref update is fast-forward only, so a `/newpage` publish landing mid-flight
   makes the removal fail rather than reverting it.
+
+## Vercel port (migration in progress)
+
+Same three behaviours, different platform primitives:
+
+| Netlify | Vercel |
+|---|---|
+| `netlify/edge-functions/library-gate.ts` | `middleware.ts` (matcher: `/`, `/pages.json`) |
+| `netlify/functions/state.mts` | `api/state/[slug].ts` |
+| `netlify/functions/remove-page.mts` | `api/remove-page.ts` |
+| `netlify.toml` → `publish` | `vercel.json` → `outputDirectory` |
+| Netlify Blobs, `getStore` vs `getDeployStore` | Vercel Blob, environment in the pathname |
+
+Two differences that matter:
+
+- **Preview isolation is done by pathname, not by store.** Netlify gave a
+  deploy-scoped store; Vercel Blob has one store per project, so state is
+  written to `state/<production|preview>/<slug>.json`. `api/remove-page.ts`
+  must build that path the same way or it deletes nothing.
+- **Strong consistency is `useCache: false`** on `get()`. Without it a read
+  right after a tick can be up to a minute stale, which reads as a failed save.
+
+Env vars needed on Vercel: `LIBRARY_PASSWORD`, `GITHUB_TOKEN`, plus the Blob
+store connected to the project (which injects `BLOB_STORE_ID` automatically).
