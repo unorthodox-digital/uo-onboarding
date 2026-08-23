@@ -3,6 +3,5 @@
   "buildCommand": null,
   "installCommand": "npm ci",
   "outputDirectory": "deploy/uo-onboarding",
-  "framework": null,
-  "trailingSlash": true
+  "framework": null
 }
