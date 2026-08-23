@@ -61,6 +61,8 @@ function loginPage(message: string, status: number): Response {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Client Library — Unorthodox</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
 <style>
   :root{--bg:#0a0e16;--panel:#131a25;--line:rgba(255,255,255,.09);
         --ink:#e9eff7;--muted:#8b97a8;--brand:#2f6bfa;--brand-hi:#4880ff}
