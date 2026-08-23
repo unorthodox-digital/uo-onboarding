@@ -3,8 +3,6 @@ import { get, put } from "@vercel/blob";
 /**
  * Shared checklist progress for one client onboarding page.
  *
- * Vercel port of netlify/functions/state.mts.
- *
  *   GET  /api/state/<slug>  -> { done: {...}, fields: {...} }
  *   PUT  /api/state/<slug>  <- { done: {...}, fields: {...} }
  *

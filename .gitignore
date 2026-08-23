@@ -1,8 +1,10 @@
 node_modules/
 
 # Host CLI state. `vercel link` writes project/org ids into .vercel.
-.netlify/
 .vercel
+
+# Local agent/editor tooling, not part of the site
+.claude/
 
 # Never commit secrets. LIBRARY_PASSWORD and GITHUB_TOKEN live in the host's
 # environment variables; a local `netlify dev` or `vercel dev` will happily

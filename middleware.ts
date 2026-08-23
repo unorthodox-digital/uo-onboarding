@@ -3,7 +3,7 @@ import { next } from "@vercel/edge";
 /**
  * Password gate for the team library.
  *
- * Vercel port of netlify/edge-functions/library-gate.ts. Guards "/" and
+ * Guards "/" and
  * "/pages.json" only — client pages at /<slug>/ stay public, because clients
  * open those links directly and have no code.
  *

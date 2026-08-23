@@ -6,8 +6,6 @@ import { del } from "@vercel/blob";
  *
  *   POST /api/remove-page  <- { slug }
  *
- * Vercel port of netlify/functions/remove-page.mts.
- *
  * Called by the X button on the library page. The library sits behind the
  * password middleware, but that middleware matches "/" and "/pages.json" only
  * — NOT this path — so the same cookie is verified here. Without that, anyone

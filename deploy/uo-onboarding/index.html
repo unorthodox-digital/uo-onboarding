@@ -93,8 +93,8 @@
 
 <script>
 /* No password logic here by design. Access is enforced server-side by the
-   library-gate edge function, and removal by netlify/functions/remove-page.mts,
-   which re-checks the same cookie because the edge gate does not cover /api/*.
+   middleware, and removal by api/remove-page.ts, which re-checks the same cookie
+   because the middleware does not match /api/*.
    Do not reintroduce a client-side code check — it would be readable in
    view-source and would add nothing. */
 
@@ -140,7 +140,7 @@ function removePage(entry, card){
         document.getElementById("list").innerHTML =
           '<li class="empty">No client pages yet.</li>';
       }
-      toast("Removed " + entry.slug + ". Netlify is rebuilding — the page goes " +
+      toast("Removed " + entry.slug + ". The site is rebuilding — the page goes " +
             "offline in about a minute.");
     })
     .catch(function(e){
