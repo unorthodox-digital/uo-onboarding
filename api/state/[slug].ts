@@ -84,7 +84,11 @@ function json(body: unknown, status = 200): Response {
 }
 
 export default async function handler(req: Request): Promise<Response> {
-  const slug = new URL(req.url).pathname.split("/").filter(Boolean).pop() ?? "";
+  // req.url is a RELATIVE path on Vercel (it was absolute on Netlify), so a
+  // bare new URL(req.url) throws. The base is only there to make it parse.
+  const slug =
+    new URL(req.url, "http://localhost").pathname.split("/").filter(Boolean).pop() ??
+    "";
   if (!SLUG_RE.test(slug)) return json({ error: "invalid slug" }, 400);
 
   const pathname = pathFor(slug);
