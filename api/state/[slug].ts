@@ -83,7 +83,12 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-export default async function handler(req: Request): Promise<Response> {
+/**
+ * Vercel routes a request to the named export matching its method. A default
+ * export would get the Node (req, res) signature instead, and a returned
+ * Response is silently discarded — the request then hangs until it times out.
+ */
+async function handler(req: Request): Promise<Response> {
   // req.url is a RELATIVE path on Vercel (it was absolute on Netlify), so a
   // bare new URL(req.url) throws. The base is only there to make it parse.
   const slug =
@@ -137,3 +142,6 @@ export default async function handler(req: Request): Promise<Response> {
 
   return json({ error: "method not allowed" }, 405);
 }
+
+export const GET = handler;
+export const PUT = handler;

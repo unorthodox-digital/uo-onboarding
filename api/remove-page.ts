@@ -99,7 +99,10 @@ async function gh(
   return resp.status === 204 ? null : resp.json();
 }
 
-export default async function handler(req: Request): Promise<Response> {
+/**
+ * Named export, not default — see the note in api/state/[slug].ts.
+ */
+async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
 
   const secret = process.env.LIBRARY_PASSWORD;
@@ -218,3 +221,5 @@ export default async function handler(req: Request): Promise<Response> {
     return json({ error: "Could not remove the page. Check the function logs." }, 502);
   }
 }
+
+export const POST = handler;
