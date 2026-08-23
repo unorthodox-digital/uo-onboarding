@@ -5,9 +5,10 @@ from this repo. Tracked in Linear **UNO-570**.
 
 Hosted on **Vercel** (project `uo-onboarding`, team `team-9698s-projects`).
 
-**The repo is private.** It was briefly public; the client bundles carry named
-contacts, direct emails, phone numbers and per-client Drive links, so keep it
-private.
+**This repo is public**, and deliberately so: Vercel's Hobby plan will not deploy
+a private organisation repo. Treat everything committed here as published, and
+note that git history keeps every page ever added — removing one from the site
+does not remove it from history.
 
 ## URL layout — read before adding pages
 
@@ -30,8 +31,8 @@ private.
   directory as-is; do not add a build command. `package.json` exists only so
   Vercel installs the dependencies the functions need — it never runs over the
   client pages. Keep `package-lock.json` committed: `vercel.json` runs `npm ci`, which requires it.
-- The site is currently **public** — any client page is reachable by guessing its
-  slug. Assume anything committed here is world-readable.
+- Client pages are served without auth and the slug is the only thing between a
+  page and a stranger, so a page is only as private as its slug is unguessable.
 
 ## Functions
 
