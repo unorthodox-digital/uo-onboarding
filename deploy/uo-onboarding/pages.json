@@ -23,5 +23,10 @@
     "slug": "resource-worldwide",
     "clientName": "Resource Worldwide",
     "publishedAt": "2026-08-16"
+  },
+  {
+    "slug": "logjam",
+    "clientName": "Robert Murphy",
+    "publishedAt": "2026-08-24"
   }
 ]
