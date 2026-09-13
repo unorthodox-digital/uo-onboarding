@@ -80,6 +80,11 @@
     "publishedAt": "2026-08-26"
   },
   {
+    "slug": "loom-example",
+    "clientName": "Loom Example",
+    "publishedAt": "2026-09-13"
+  },
+  {
     "slug": "credit-hound",
     "clientName": "Mario Lattuga",
     "publishedAt": "2026-08-20"
