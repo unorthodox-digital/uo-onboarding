@@ -215,11 +215,6 @@
     "publishedAt": "2026-11-11"
   },
   {
-    "slug": "systems-ad-setup-jd-baker",
-    "clientName": "JD Baker",
-    "publishedAt": "2026-11-18"
-  },
-  {
     "slug": "thyros",
     "clientName": "Jeff Doherty",
     "publishedAt": "2026-09-09"
@@ -238,6 +233,11 @@
     "slug": "hip-motorsports",
     "clientName": "Jim",
     "publishedAt": "2026-10-15"
+  },
+  {
+    "slug": "systems-ad-setup-jd-baker",
+    "clientName": "John",
+    "publishedAt": "2026-11-20"
   },
   {
     "slug": "systems-ad-setup-managememberships-jonathon-klem",
